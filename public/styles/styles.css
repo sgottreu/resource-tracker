@@ -1,0 +1,8 @@
+    .label { display:block !important; height:35px;}
+    .input { display:block; height:85px;}
+    .plus-minus { height: 35px;}
+    .glyphicons { width: 32px; height: 32px; display: inline; margin: 10px 15px 0px; float:left; cursor: pointer;}
+    .glyphicons-circle-plus { background: url(/images/glyphicons-191-circle-plus.png) no-repeat;}
+    .glyphicons-circle-minus { background: url(/images/glyphicons-192-circle-minus.png) no-repeat;}
+
+    .hide { display: none; }

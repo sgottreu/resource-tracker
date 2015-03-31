@@ -1,58 +1,24 @@
-var planetary_resources = {
-    "k": {
-        "ore": 5,
-        "energy": 2,
-        "settlers": 1,
-        "grain": 0,
-        "crystals": 2
-    },
-    "t": {
-        "ore": 2,
-        "energy": 0,
-        "settlers": 2,
-        "grain": 4,
-        "crystals": 1      
-    },
-    "d": {
-        "ore": 3,
-        "energy": 3,
-        "settlers": 0,
-        "grain": 0,
-        "crystals": 4
-    },
-    "x": {
-        "ore": 1,
-        "energy": 0,
-        "settlers": 4,
-        "grain": 3,
-        "crystals": 1	
+var home_planets, xeno_planets, resources, planetary_resources;
+
+function addPlanetaryResources(planets, home){
+  var r_len=resources.length, p_len = planets.length;
+  var doc, key, total, resource_total = 0;
+  var home = (home === undefined) ? false : true;
+
+  for(var i=0;i<p_len;i++) {
+    for(var j=0;j<r_len;j++) {
+      key = planets[i]+'_'+resources[j];
+      doc = document.getElementById(key);
+
+      total = (doc.value == "") ? 0 : parseInt(doc.value);
+
+      resource_total = (home) ? parseInt(planetary_resources[ planets[i] ][ resources[j] ]) : 0;
+
+      total = parseInt(total) + resource_total;
+
+      doc.value = total;
     }
-};
-
-var planets = Object.keys(planetary_resources);
-
-var resources = Object.keys(planetary_resources.k);
-
-
-var doc, key, total;
-var r_len=resources.length, p_len = planets.length;
-
-addPlanetaryResources();
-
-function addPlanetaryResources(){
-
-    for(var i=0;i<p_len;i++) {
-        for(var j=0;j<r_len;j++) {
-            key = planets[i]+'_'+resources[j];
-            doc = document.getElementById(key);
-
-            total = (doc.value == "") ? 0 : parseInt(doc.value);
-
-            total = parseInt(total) + parseInt(planetary_resources[ planets[i] ][ resources[j] ]);
-
-            doc.value = total;
-        }
-    }
+  }
 }
 
 var els = document.getElementsByClassName('glyphicons');
@@ -66,6 +32,14 @@ for(var i=0,len=els.length;i<len;i++){
     }, false);
 }
 
+var e = document.getElementsByClassName('planet_label');
+
+for(var i=0,len=e.length;i<len;i++){
+    e[i].addEventListener("click", function(){
+      checkView(this.parentNode);
+    }, false);
+}
+
 function getButtonAction(el){
     var classList = el.split(' ');
     var action = classList[1].split('-');
@@ -75,6 +49,40 @@ function getButtonAction(el){
 function getParentId(el){
     classList = el.split(' ');
     return classList[0];
+}
+
+function checkView(el) {
+
+  var classList;
+  for(var h=0;h<el.children.length;h++) {
+    classList = el.children[h].className.split(' ');
+    if(classList[0] == 'input') {
+      
+        if(classList[1] == 'hide') {
+          show(el.children[h]);
+        } else {
+          hide(el.children[h]);
+        }
+    }
+  }
+}
+
+function show(el){
+
+  var classList = el.className.split(' ');
+
+  for(var i=0;i<classList.length;i++){
+    if(classList[i] == 'hide') {
+      classList.splice(i, 1);
+    }
+  }
+
+  el.className = classList.join(' ');
+
+}
+
+function hide(el){
+  el.className = el.className + ' hide';
 }
 
 function changeResourceValue(id,dir)
@@ -92,4 +100,55 @@ function changeResourceValue(id,dir)
       break;
   }
   doc.value = total;
+}
+
+
+get('/getPlanets').then(function(response) {
+  setPlanets(JSON.parse(response));
+}).then(function(response) {
+  get('/getResources').then(function(response) {
+    resources = JSON.parse(response);
+  }).then(function(response) {
+    get('/getPlanetResources').then(function(response) {
+      planetary_resources = JSON.parse(response);
+      addPlanetaryResources(home_planets, true);
+      addPlanetaryResources(xeno_planets);
+    })
+  });
+});
+
+function setPlanets(response) {
+  home_planets = response.home;
+  xeno_planets = response.xeno;
+}
+
+function get(url) {
+  return new Promise(function(resolve, reject) {
+
+    var req = new XMLHttpRequest();
+    req.open('GET', url, true);
+
+    req.onload = function() {
+      // This is called even on 404 etc
+      // so check the status
+      if (req.status == 200) {
+        // Resolve the promise with the response text
+        resolve(req.response);
+      }
+      else {
+        // Otherwise reject with the status text
+        // which will hopefully be a meaningful error
+        reject(Error(req.statusText));
+      }
+    };
+
+    // Handle network errors
+    req.onerror = function() {
+      reject(Error("Network Error"));
+    };
+
+    // Make the request
+    req.send();
+
+  });
 }
