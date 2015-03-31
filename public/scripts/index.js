@@ -54,3 +54,42 @@ function addPlanetaryResources(){
         }
     }
 }
+
+var els = document.getElementsByClassName('glyphicons');
+
+for(var i=0,len=els.length;i<len;i++){
+    els[i].addEventListener("click", function(){
+        var btnAction, parentId;
+        btnAction = getButtonAction(this.className);
+        parentId = getParentId(this.parentNode.className);
+        changeResourceValue(parentId,btnAction)
+    }, false);
+}
+
+function getButtonAction(el){
+    var classList = el.split(' ');
+    var action = classList[1].split('-');
+    return action[2];
+}
+
+function getParentId(el){
+    classList = el.split(' ');
+    return classList[0];
+}
+
+function changeResourceValue(id,dir)
+{
+  var doc = document.getElementById(id);
+
+  var total = (doc.value == "") ? 0 : parseInt(doc.value);
+
+  switch (dir) {
+    case 'minus':
+      total = (total == 0) ? 0 : total - 1;
+      break;
+    default:
+      total++;
+      break;
+  }
+  doc.value = total;
+}
