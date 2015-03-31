@@ -1,31 +1,31 @@
 var planetary_resources = {
     "k": {
-        "ore": 1,
+        "ore": 5,
         "energy": 2,
-        "settlers": 2,
-        "grain": 3,
-        "crystals": 4
+        "settlers": 1,
+        "grain": 0,
+        "crystals": 2
     },
     "t": {
-        "ore": 0,
+        "ore": 2,
         "energy": 0,
-        "settlers": 0,
-        "grain": 0,
-        "crystals": 0       
+        "settlers": 2,
+        "grain": 4,
+        "crystals": 1      
     },
     "d": {
-        "ore": 0,
-        "energy": 0,
+        "ore": 3,
+        "energy": 3,
         "settlers": 0,
         "grain": 0,
-        "crystals": 0
+        "crystals": 4
     },
     "x": {
-        "ore": 0,
+        "ore": 1,
         "energy": 0,
-        "settlers": 0,
-        "grain": 0,
-        "crystals": 0
+        "settlers": 4,
+        "grain": 3,
+        "crystals": 1	
     }
 };
 
