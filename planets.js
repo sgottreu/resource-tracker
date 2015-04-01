@@ -40,7 +40,7 @@ var buildSection = function(name) {
     var html = '<div class="planet">';
     html +=     '<div class="planet_label label">'+name.toUpperCase()+'</div>' ;
     for(var i=0,len=resources.length;i<len;i++) {
-        html +=  '<div class="input hide">'+resources[i]+'<br>';
+        html +=  '<div class="input hide"><div class="resource_label">'+resources[i]+'</div>';
         html += '<input type="number" id="'+name+'_'+resources[i]+'">';
         html += '<div class="'+name+'_'+resources[i]+' plus-minus">';
         html += '<span class="glyphicons glyphicons-circle-plus"></span>';
