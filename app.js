@@ -14,7 +14,9 @@ app.locals.resources = require('./planets').resources;
 app.locals.planetary_resources = require('./planets').planetary_resources;
 
 app.get('/', function(req, res) {
-  var html = planets.buildForm();
+  var html;
+  html = planets.tradeForm();
+  html += planets.buildForm();
 
   res.render('index', { 
     title: 'Resource Tracker',

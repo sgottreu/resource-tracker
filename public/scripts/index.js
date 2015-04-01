@@ -102,6 +102,23 @@ function changeResourceValue(id,dir)
   doc.value = total;
 }
 
+document.getElementById('trade_button').addEventListener("click", function(){
+  var giver = document.getElementById('trade_giver').value;
+  var receiver = document.getElementById('trade_receiver').value;
+  var resource = document.getElementById('trade_resources').value;
+  var amount = document.getElementById('trade_amount').value;
+    
+  tradeResources(giver,receiver,resource, amount);
+}, false);
+
+function tradeResources(giver,receiver,resource, amount)
+{
+  var g_doc = document.getElementById(giver+'_'+resource);
+  var r_doc = document.getElementById(receiver+'_'+resource);
+
+  g_doc.value = parseInt(g_doc.value) - parseInt(amount);
+  r_doc.value = parseInt(r_doc.value) + parseInt(amount);
+}
 
 get('/getPlanets').then(function(response) {
   setPlanets(JSON.parse(response));
@@ -124,31 +141,20 @@ function setPlanets(response) {
 
 function get(url) {
   return new Promise(function(resolve, reject) {
-
     var req = new XMLHttpRequest();
     req.open('GET', url, true);
 
     req.onload = function() {
-      // This is called even on 404 etc
-      // so check the status
       if (req.status == 200) {
-        // Resolve the promise with the response text
         resolve(req.response);
       }
       else {
-        // Otherwise reject with the status text
-        // which will hopefully be a meaningful error
         reject(Error(req.statusText));
       }
     };
-
-    // Handle network errors
     req.onerror = function() {
       reject(Error("Network Error"));
     };
-
-    // Make the request
     req.send();
-
   });
 }

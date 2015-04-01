@@ -50,7 +50,7 @@ var buildSection = function(name) {
         
     html +=  '</div>'
     return html;
-}
+};
 
 var buildForm = function() {
     var html = '';
@@ -62,10 +62,46 @@ var buildForm = function() {
         html += buildSection(planets.xeno[i]);
     }
     return html;
-}
+};
+
+var tradeForm = function() {
+    var html = '<div class="trade_form">';
+  
+    html += '<div class="resource">Resource:';
+
+    html += '<select id="trade_resources">';
+    for(var i=0,len=resources.length;i<len;i++) {
+        html += '<option value="'+resources[i]+'">'+resources[i]+'</option>';
+    }
+    html += '</select></div>';
+
+    html += '<div class="amount">Amount:';
+    html += '<input id="trade_amount" type="number">';
+    html += '</div>';
+
+    html += '<div class="giver">Giver:';
+
+    html += '<select id="trade_giver">';
+    for(var i=0,len=planets.home.length;i<len;i++) {
+        html += '<option value="'+planets.home[i]+'">'+planets.home[i]+'</option>';
+    }
+    html += '</select></div>';
+
+    html += '<div class="trade_receiver">Receiver:';
+
+    html += '<select id="trade_receiver">';
+    for(var i=0,len=planets.home.length;i<len;i++) {
+        html += '<option value="'+planets.home[i]+'">'+planets.home[i]+'</option>';
+    }
+    html += '</select></div>';
+
+    html += '<button id="trade_button">Trade</button>';
+    return html;
+};
 
 module.exports.names = planets;
 module.exports.resources = resources;
 module.exports.planetary_resources = planetary_resources;
 
 module.exports.buildForm = buildForm;
+module.exports.tradeForm = tradeForm;
